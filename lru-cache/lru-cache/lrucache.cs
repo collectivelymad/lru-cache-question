@@ -12,9 +12,9 @@ namespace lru_cache
           private IndexedLinkedList cacheOrder;
           public Dictionary<int, int> cacheValues { private set; get;}
 
-          private const int max_size = 10;
+          private const int max_size = 20;
 
-
+           
           public LRUcache()
           {
                this.cacheOrder = new IndexedLinkedList();
