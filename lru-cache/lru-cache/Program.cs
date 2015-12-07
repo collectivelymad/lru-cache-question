@@ -11,19 +11,28 @@ namespace lru_cache
           static void Main(string[] args)
           {
 
-               LRUcache cache = new LRUcache();
+               LRUCache cache = new LRUCache(3);
 
-               cache.set(1, 1);
-               cache.set(2, 2);
-               cache.set(3, 3);
-               cache.set(4, 4);
-               cache.set(5, 5);
-               cache.set(6, 6);
-               cache.delete(2);
-               cache.get(3);
+               cache.Set(1, 1);
+               cache.Set(2, 2);
+               cache.Set(3, 3);
+               cache.Set(4, 4);
+               cache.Set(5, 5);
+               cache.Set(6, 6);
+               cache.Delete(2);
+               var item = cache.Get(3);
 
-               cache.get(5);
-               cache.get(5);
+               if (item.HasValue)
+                    Console.WriteLine(item.Value);
+
+               cache.Get(5);
+
+
+               var item2 = cache.Get(5);
+
+               if (item2.HasValue)
+                    Console.WriteLine(item2.Value);
+               cache.Get(5);
           }
      }
 }

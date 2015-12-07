@@ -7,58 +7,56 @@ using System.Threading.Tasks;
 
 namespace lru_cache
 {
-     public class LRUcache
+     public class LRUCache
      {
-          private IndexedLinkedList cacheOrder;
-          public Dictionary<int, int> cacheValues { private set; get;}
-
-          private const int max_size = 20;
-
+          private indexedLinkedList<int> cacheItems;
+       
+          private int max_size;
            
-          public LRUcache()
+          public LRUCache(int size)
           {
-               this.cacheOrder = new IndexedLinkedList();
-               this.cacheValues = new Dictionary<int, int>();
+               max_size = size;
+               this.cacheItems = new indexedLinkedList<int>();
           }
       
-          public void set(int key, int value)
+          public void Set(int key, int value)
           {
-               if (cacheValues.ContainsKey(key))
+               if (cacheItems.ContainsKey(key))
                {
-                    cacheOrder.reset(key);
+                    cacheItems.Reset(key);
                }
                else
                {
                     if (isFull()) 
                     {
-                         cacheOrder.remove();
-                         cacheValues.Remove(cacheValues.First().Key);
+                         cacheItems.Remove();
                     }
-
-                    cacheValues[key] = value;
-                    cacheOrder.add(key);
+                     
+                    cacheItems.Add(key);
                }
           }
 
-          public void delete(int key)
+          public void Delete(int key)
           {
-               cacheOrder.remove(key);
-               cacheValues.Remove(key);
+               cacheItems.Remove(key);
           }
+ 
+          public int? Get(int key)
+          {
+               var result = cacheItems.ContainsKey(key);
 
+               //used Default(T) for an item that was not found.
+               if (result)
+                    cacheItems.Reset(key);
+               else
+                    return null;
 
+               return cacheItems.Item(key);
+          }
+  
           private Boolean isFull()
           {
-               return cacheValues.Count == max_size;
-          }
-
-          public int get(int key)
-          {
-               var result = cacheValues[key];
-
-               cacheOrder.reset(key);
-
-               return result;
+               return cacheItems.Count == max_size;
           }
      }
 }

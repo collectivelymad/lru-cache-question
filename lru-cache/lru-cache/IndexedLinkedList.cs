@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace lru_cache
 {
-     public class IndexedLinkedList
+     public class indexedLinkedList<T>
      {
-          public LinkedList<int> itemLinkedList;
-          public Dictionary<int, LinkedListNode<int>> itemPointer;
+          public LinkedList<T> itemLinkedList;
+          public Dictionary<T, LinkedListNode<T>> itemPointer;
 
-          public IndexedLinkedList()
+          public indexedLinkedList()
           {
-               itemLinkedList = new LinkedList<int>();
-               itemPointer = new Dictionary<int, LinkedListNode<int>>();
+               itemLinkedList = new LinkedList<T>();
+               itemPointer = new Dictionary<T, LinkedListNode<T>>();
           }
 
-          public void add(int key) 
+          public void Add(T key) 
           {
                if (!itemPointer.ContainsKey(key)) 
                { 
@@ -26,7 +26,19 @@ namespace lru_cache
                }
           }
 
-          public void remove() 
+          public int Count
+          {    
+               get {
+                    return itemPointer.Count;
+               }      
+          }
+
+          public bool ContainsKey(T key)
+          {
+               return itemPointer.ContainsKey(key);
+          }
+
+          public void Remove() 
           {
                if ( itemLinkedList.First != null)
                { 
@@ -35,7 +47,7 @@ namespace lru_cache
                }
           }
 
-          public void remove(int key)
+          public void Remove(T key)
           {
                if (itemPointer.ContainsKey(key))
                {
@@ -45,9 +57,20 @@ namespace lru_cache
                }
           }
 
-          public void reset(int key)
+          public T Item(T key)
           {
-               if ( itemLinkedList.Last.Value != key) 
+               if (itemPointer.ContainsKey(key))
+               {
+                    return itemPointer[key].Value;
+               } else
+               {
+                    return default(T);
+               }
+          }
+
+          public void Reset(T key)
+          {
+               if ( !itemLinkedList.Last.Value.Equals(key)) 
                { 
                     var x = itemPointer[key];
 
